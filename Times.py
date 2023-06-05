@@ -40,16 +40,19 @@ for ts in top_story:
     sec=str(ts["section"]).upper()
     if sec==option:
         stories.append(ts)
-st.write(stories)
+# st.write(stories)
 
 #Getting list of stories title from the top story dictonary for creating the drop down menu.
 title=[]
 for ts in stories:
     titl=str(ts["title"]).upper()
     title.append(titl)
-option = st.selectbox(
-    'Select the section Top Stories',
-    (title))
+
+#Checkbox for the top stories title    
+for titl in title:    
+    st.checkbox(titl)
     
+
+
 
 
