@@ -16,7 +16,7 @@ st.session_state.theme = "light"
 # Apply the theme to the app
 st.markdown(light, unsafe_allow_html=True)
 
-st.title("New York Times Home")
+st.title("New York Times Stories Sentiment Analysis")
 
 top_stories = nyt.top_stories()
 #Grab the first data item in top_stories and view it
@@ -40,7 +40,6 @@ for ts in top_story:
     sec=str(ts["section"]).upper()
     if sec==option:
         stories.append(ts)
-# st.write(stories)
 
 #Getting list of stories title from the top story dictonary for creating the drop down menu.
 title=[]
@@ -51,7 +50,7 @@ for ts in stories:
 #Checkbox for the top stories title    
 for titl in title:    
     st.checkbox(titl)
-    
+st.write(stories)
 
 
 
