@@ -50,8 +50,23 @@ for ts in stories:
 #Checkbox for the top stories title    
 for titl in title:    
     st.checkbox(titl)
-st.write(stories)
 
+cols1,cols2=st.columns(2)
+
+ts_keys=[]
+
+for  key_val in stories[0].keys():
+    ts_keys.append(key_val)
+    
+ts_key_removed=['section','subsection','title']    
+ts_keys=ts_keys-ts_key_removed
+st.write(ts_keys)
+
+with cols2:
+    st.write("cols2")
+
+with cols1:
+    st.write("cols1")
 
 
 
