@@ -1,6 +1,6 @@
 import streamlit as st
 from pynytimes import NYTAPI
-
+import pandas as pd
 
 api_key = "Frvpakmi7RzBNtGrwxKbcGNxwqBNvVEI"
 nyt = NYTAPI(api_key, parse_dates=True)
@@ -23,6 +23,24 @@ top_stories = nyt.top_stories()
 
 #Collecting top stories list
 top_story = top_stories
+
+#Creating a table of all the top_stories
+#storing the keys for all the values 
+ts_keys_main=[]
+for keys in top_stories[0].keys():
+    ts_keys_main.append(keys)
+#storing all the values as different line items
+values_keys=[]
+for vals in top_stories:
+    val_temp=[]
+    for values in vals.values():
+        val_temp.append(values)
+    values_keys.append(val_temp)
+#creating a dataframe for storing on cloud, in a s3 bucket
+story_df=pd.DataFrame(values_keys,columns=ts_keys_main)
+st.write(story_df)
+# story_df.to_csv("story_df.csv",index=False)
+
 
 #Getting list of section from the top story dictonary for creating the drop down menu.
 section=set()
