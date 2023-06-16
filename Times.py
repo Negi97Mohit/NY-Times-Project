@@ -1,6 +1,17 @@
 import streamlit as st
 from pynytimes import NYTAPI
 import pandas as pd
+import boto3
+
+
+#S3 bucket cloud implementaion to be implementeds
+# access_key_id = 'AKIASYW3E3PM3DD63GXN'
+# secret_access_key = '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'
+# bucket_name = 'times.sentiment.bucket'
+# def get_s3():
+#     s3 = boto3.resource('s3', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)  
+#     return s3
+
 
 api_key = "Frvpakmi7RzBNtGrwxKbcGNxwqBNvVEI"
 nyt = NYTAPI(api_key, parse_dates=True)
@@ -39,15 +50,12 @@ for vals in top_stories:
 #creating a dataframe for storing on cloud, in a s3 bucket
 story_df=pd.DataFrame(values_keys,columns=ts_keys_main)
 st.write(story_df)
-# story_df.to_csv("story_df.csv",index=False)
-
 
 #Getting list of section from the top story dictonary for creating the drop down menu.
 section=set()
 for ts in top_story:
     sec=str(ts["section"]).upper()
     section.add(sec)
-    
 option = st.selectbox(
     'Select the section Top Stories',
     (section))
@@ -69,8 +77,8 @@ for ts in stories:
 for titl in title:    
     st.checkbox(titl)
 
+#colums for displaying the user filters and story content
 cols1,cols2=st.columns(2)
-
 #storing the fiter values in ts_keys
 ts_keys=[]
 #getting the keys for the filter
@@ -81,11 +89,15 @@ ts_key_removed=['section','subsection','title']
 for elem in ts_key_removed:
     ts_keys.remove(elem)
         
+selected=str(option)
+selected=selected.lower()
+st.write(selected)
+
 with cols2:
     filter_val=st.multiselect("Select your filter",ts_keys)
-
 with cols1:
     st.write(filter_val)
-
+    filter_df=story_df.loc[story_df.section==selected]
+    st.write(filter_df)
 
 
