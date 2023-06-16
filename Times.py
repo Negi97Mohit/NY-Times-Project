@@ -12,6 +12,8 @@ import boto3
 #     s3 = boto3.resource('s3', aws_access_key_id=access_key_id, aws_secret_access_key=secret_access_key)  
 #     return s3
 
+st.set_page_config(layout="wide")
+
 def main():
 
     api_key = "Frvpakmi7RzBNtGrwxKbcGNxwqBNvVEI"
@@ -55,7 +57,7 @@ def main():
     #Getting list of section from the top story dictonary for creating the drop down menu.
     section=set()
     for ts in top_story:
-        sec=str(ts["section"]).upper()
+        sec=str(ts["section"])
         section.add(sec)
     option = st.selectbox(
         'Select the section Top Stories',
@@ -64,19 +66,18 @@ def main():
     #Getting the stories from certain section
     stories=[]
     for ts in top_story:
-        sec=str(ts["section"]).upper()
+        sec=str(ts["section"])
         if sec==option:
             stories.append(ts)
 
     #Getting list of stories title from the top story dictonary for creating the drop down menu.
     title=[]
     for ts in stories:
-        titl=str(ts["title"]).upper()
+        titl=str(ts["title"])
         title.append(titl)
 
     #Checkbox for the top stories title    
-    for titl in title:    
-        st.checkbox(titl)
+    selected_title=st.multiselect("select the story title",title)
 
     #storing the fiter values in ts_keys
     ts_keys=[]
@@ -99,18 +100,33 @@ def main():
         filter_val=st.multiselect("Select your filter",ts_keys)
     #cols1 displays the resultant dataframe with filters
     with cols1:
-        if len(filter_val)==0:
-            filter_df=story_df.loc[story_df.section==selected]
-            filter_df.drop(columns=['title','subsection','section'],inplace=True)
-            st.write(filter_df)
+        if len(selected_title)==0:
+            if len(filter_val)==0:
+                filter_df=story_df.loc[story_df.section==selected]
+                filter_df.drop(columns=['title','subsection','section'],inplace=True)
+                st.write(filter_df)
+            else:
+                filter_df=story_df.loc[story_df.section==selected] 
+                filter_df.drop(columns=['title','subsection','section'],inplace=True)
+                st.write(filter_df[filter_val])
+                with st.expander("Stories"):
+                    st.write("stories")
         else:
-            filter_df=story_df.loc[story_df.section==selected]
-            filter_df.drop(columns=['title','subsection','section'],inplace=True)
-            st.write(filter_df[filter_val])
-            return_filter(filter_df)
+            if len(selected_title)==0:
+                filter_df=story_df.loc[(story_df.section==selected )and (story_df.title==selected_title)]
+                if len(filter_val)==0:
+                    # filter_df.drop(columns=['title','subsection','section'],inplace=True)
+                    st.write(filter_df)
+                else:
+                    # filter_df.drop(columns=['title','subsection','section'],inplace=True)
+                    st.write(filter_df[filter_val])
+                    with st.expander("Stories"):
+                        st.write("stories")
             
-def return_filter(filter_vals):
-    return filter_vals
+            
+                            
+
+
 
 if __name__=="__main__":
     main()
