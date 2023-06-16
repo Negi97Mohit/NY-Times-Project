@@ -53,20 +53,21 @@ for titl in title:
 
 cols1,cols2=st.columns(2)
 
+#storing the fiter values in ts_keys
 ts_keys=[]
-
+#getting the keys for the filter
 for  key_val in stories[0].keys():
     ts_keys.append(key_val)
-    
+#removing the values of already existing keys value
 ts_key_removed=['section','subsection','title']    
-ts_keys=ts_keys-ts_key_removed
-st.write(ts_keys)
-
+for elem in ts_key_removed:
+    ts_keys.remove(elem)
+        
 with cols2:
-    st.write("cols2")
+    filter_val=st.multiselect("Select your filter",ts_keys)
 
 with cols1:
-    st.write("cols1")
+    st.write(filter_val)
 
 
 
