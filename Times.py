@@ -10,13 +10,14 @@ from nltk.stem.snowball import SnowballStemmer
 import streamlit as st
 from pynytimes import NYTAPI
 import pandas as pd
-import boto3
+from nltk.tokenize import word_tokenize as wt
+from keybert import KeyBERT
 
 # Sentient analysis imports
 import nltk
 nltk.download('punkt')
 nltk.download('wordnet')
-
+# nlp = spacy.load("en_core_web_sm")
 
 begin_date = dt.date(2021, 1, 1)
 end_date = dt.date.today()
@@ -124,7 +125,6 @@ def main():
 
     selected = str(option)
     selected = selected.lower()
-    # st.write(selected)
 
     # colums for displaying the user filters and story content
     cols1, cols2 = st.columns(2)
@@ -164,11 +164,23 @@ def main():
                 filter_df.drop(
                     columns=['title', 'subsection', 'section'], inplace=True)
                 st.write(filter_df[filter_val])
-                with st.expander("Stories"):
-                    st.write(filter_df.abstract)
-                    abstract = filter_df.abstract.tolist()
+        with st.expander("Stories"):
+            st.write(filter_df.abstract)
+            abstract = filter_df.abstract.tolist()
     st.write(abstract)
-    st.write(abstract[0])
+    kw_model = KeyBERT()
+    keywords = filter_df.abstract.apply(kw_model.extract_keywords)
+
+    # list of keywords
+    work_list = keywords.tolist()
+    # storing the list of words
+    words = []
+    for word in work_list:
+        w_temp=[]
+        for w in word:
+            w_temp.append(w[0])
+        words.append(w_temp)
+    st.write(words)
 
 
 if __name__ == "__main__":
