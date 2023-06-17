@@ -1,7 +1,36 @@
+from nltk import sent_tokenize, word_tokenize
+import datetime as dt
+import tweepy as tw
+import spacy
+import re
+import numpy as np
+from nltk.corpus import stopwords
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.stem.snowball import SnowballStemmer
 import streamlit as st
 from pynytimes import NYTAPI
 import pandas as pd
 import boto3
+
+# Sentient analysis imports
+import nltk
+nltk.download('punkt')
+nltk.download('wordnet')
+
+
+begin_date = dt.date(2021, 1, 1)
+end_date = dt.date.today()
+
+
+# keys and access tokens
+consumer_key = 'XBjDk0fWV1NYukc4cKtG6Czox'
+consumer_secret = '7LK7PWlF9bZ5i1mvfV13wBhLRsWAJq1GQacmQq40cMxy2V4Ve7'
+access_token = '1394066845175623680-m1U3YkNG4ukv7sTdwXZ94D5PYdigiJ'
+access_token_secret = 'koa1tHYsIYR6qWrqSvEtacegMdTORTDpx4kqmRclPXHKj'
+
+auth = tw.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tw.API(auth, wait_on_rate_limit=True)
 
 
 # S3 bucket cloud implementaion to be implementeds
@@ -95,7 +124,7 @@ def main():
 
     selected = str(option)
     selected = selected.lower()
-    st.write(selected)
+    # st.write(selected)
 
     # colums for displaying the user filters and story content
     cols1, cols2 = st.columns(2)
