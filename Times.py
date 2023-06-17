@@ -1,6 +1,6 @@
 from nltk import sent_tokenize, word_tokenize
 import datetime as dt
-import tweepy as tw
+import tweepy
 import spacy
 import re
 import numpy as np
@@ -12,6 +12,8 @@ from pynytimes import NYTAPI
 import pandas as pd
 from nltk.tokenize import word_tokenize as wt
 from keybert import KeyBERT
+from datetime import datetime
+
 
 # Sentient analysis imports
 import nltk
@@ -29,10 +31,9 @@ consumer_secret = '7LK7PWlF9bZ5i1mvfV13wBhLRsWAJq1GQacmQq40cMxy2V4Ve7'
 access_token = '1394066845175623680-m1U3YkNG4ukv7sTdwXZ94D5PYdigiJ'
 access_token_secret = 'koa1tHYsIYR6qWrqSvEtacegMdTORTDpx4kqmRclPXHKj'
 
-auth = tw.OAuthHandler(consumer_key, consumer_secret)
+auth = tweepy.auth.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
-api = tw.API(auth, wait_on_rate_limit=True)
-
+api = tweepy.API(auth)
 
 # S3 bucket cloud implementaion to be implementeds
 # access_key_id = 'AKIASYW3E3PM3DD63GXN'
@@ -116,7 +117,7 @@ def main():
     for key_val in stories[0].keys():
         ts_keys.append(key_val)
     # removing the values of already existing keys value
-    ts_key_removed = ['section', 'subsection', 'title']
+    ts_key_removed = ['section', 'subsection', 'title', 'created_date']
     for elem in ts_key_removed:
         ts_keys.remove(elem)
 
@@ -171,16 +172,41 @@ def main():
     kw_model = KeyBERT()
     keywords = filter_df.abstract.apply(kw_model.extract_keywords)
 
+    # list of dates for the article
+    dates = []
+    dates_temp = filter_df.created_date.tolist()
+    for dt in dates_temp:
+        dates.append(datetime.date(dt))
+
     # list of keywords
     work_list = keywords.tolist()
     # storing the list of words
     words = []
     for word in work_list:
-        w_temp=[]
+        w_temp = []
         for w in word:
             w_temp.append(w[0])
         words.append(w_temp)
-    st.write(words)
+    find_tweets(dates, words)
+
+# function to find the tweets for the following article on created dates
+
+
+def find_tweets(dates, words):
+    # list of tweets for particular article
+    tweets = []
+    for date, word in zip(dates, words):
+        # temporary tweets list
+        tweet_temp = []
+        for w in word:
+            searchword = w
+            date_since = date
+            # searching tweets
+            tweet = tweepy.Cursor(api.search_tweets, q=searchword, lang="en",
+                                  since=date_since, count=10)
+            tweet_temp.append(tweet)
+        tweets.append(tweet)
+    st.write(tweets)
 
 
 if __name__ == "__main__":
