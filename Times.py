@@ -207,6 +207,9 @@ def find_tweets(dates, words):
             tweet_temp.append(tweet)
         tweets.append(tweet)
     st.write(tweets)
+    for tw1 in tweets:
+        for tw in tw1:
+            st.write(tw)
 
 
 if __name__ == "__main__":
