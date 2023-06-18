@@ -25,7 +25,7 @@ begin_date = dt.date(2021, 1, 1)
 end_date = dt.date.today()
 
 
-# keys and access tokens
+# keys and 1s tokens
 consumer_key = 'XBjDk0fWV1NYukc4cKtG6Czox'
 consumer_secret = '7LK7PWlF9bZ5i1mvfV13wBhLRsWAJq1GQacmQq40cMxy2V4Ve7'
 access_token = '1394066845175623680-m1U3YkNG4ukv7sTdwXZ94D5PYdigiJ'
@@ -202,14 +202,11 @@ def find_tweets(dates, words):
             searchword = w
             date_since = date
             # searching tweets
-            tweet = tweepy.Cursor(api.search_tweets, q=searchword, lang="en",
-                                  since=date_since, count=10)
+            tweet = api.search_tweets(q=str(searchword), lang="en",
+                                      since=date_since, count=10)
             tweet_temp.append(tweet)
         tweets.append(tweet)
     st.write(tweets)
-    for tw1 in tweets:
-        for tw in tw1:
-            st.write(tw)
 
 
 if __name__ == "__main__":
