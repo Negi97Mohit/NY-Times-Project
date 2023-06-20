@@ -1,12 +1,7 @@
 from nltk import sent_tokenize, word_tokenize
 import datetime as dt
-import tweepy
-import spacy
-import re
 import numpy as np
 from nltk.corpus import stopwords
-from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.stem.snowball import SnowballStemmer
 import streamlit as st
 from pynytimes import NYTAPI
 import pandas as pd
@@ -20,20 +15,6 @@ import nltk
 nltk.download('punkt')
 nltk.download('wordnet')
 # nlp = spacy.load("en_core_web_sm")
-
-begin_date = dt.date(2021, 1, 1)
-end_date = dt.date.today()
-
-
-# keys and 1s tokens
-consumer_key = 'XBjDk0fWV1NYukc4cKtG6Czox'
-consumer_secret = '7LK7PWlF9bZ5i1mvfV13wBhLRsWAJq1GQacmQq40cMxy2V4Ve7'
-access_token = '1394066845175623680-m1U3YkNG4ukv7sTdwXZ94D5PYdigiJ'
-access_token_secret = 'koa1tHYsIYR6qWrqSvEtacegMdTORTDpx4kqmRclPXHKj'
-
-auth = tweepy.auth.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
 
 # S3 bucket cloud implementaion to be implementeds
 # access_key_id = 'AKIASYW3E3PM3DD63GXN'
@@ -187,26 +168,9 @@ def main():
         for w in word:
             w_temp.append(w[0])
         words.append(w_temp)
-    find_tweets(dates, words)
 
-# function to find the tweets for the following article on created dates
-
-
-def find_tweets(dates, words):
-    # list of tweets for particular article
-    tweets = []
-    for date, word in zip(dates, words):
-        # temporary tweets list
-        tweet_temp = []
-        for w in word:
-            searchword = w
-            date_since = date
-            # searching tweets
-            tweet = api.search_tweets(q=str(searchword), lang="en",
-                                      since=date_since, count=10)
-            tweet_temp.append(tweet)
-        tweets.append(tweet)
-    st.write(tweets)
+    end_date = datetime.now()
+    st.write(word)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,5 @@
-import Times as ts
 import streamlit as st
 
-#Calling the main from time.py file
+# Calling the main from time.py file
 
-ts.main()
-
-
+st.title("Welcome to NY Times World")
