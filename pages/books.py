@@ -2,6 +2,9 @@ from pynytimes import NYTAPI
 import streamlit as st
 import pandas as pd
 
+import requests
+from PIL import Image
+
 
 def main():
 
