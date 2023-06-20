@@ -19,12 +19,9 @@ def main():
 def create_df(reviews):
     df_keys_temp = reviews[0].keys()
     df_keys = []
-
     for dic in df_keys_temp:
         df_keys.append(dic.capitalize())
-
     df_vals = []
-
     for dic in reviews:
         df_val_temp = []
         for val in dic.values():
