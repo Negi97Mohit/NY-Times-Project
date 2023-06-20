@@ -13,6 +13,7 @@ def main():
 
     api_key = "Frvpakmi7RzBNtGrwxKbcGNxwqBNvVEI"
     nyt = NYTAPI(api_key, parse_dates=True)
+    review = []
 
     # saving the book keys in set for the dataframe
     book_keys = []
@@ -39,10 +40,14 @@ def main():
     st.write(books_df)
     book_title = books_df.title.to_list()
     selected_books = st.multiselect("Books title interested", book_title)
-    book_info(selected_books, books_df)
+    review = []
+    for book in selected_books:
+        rev_temp = nyt.book_reviews(title=book)
+        review.append(rev_temp)
+    book_info(selected_books, books_df, review)
 
 
-def book_info(selected_books, books_df):
+def book_info(selected_books, books_df, review):
 
     cols1, cols2 = st.columns(2)
     with cols1:
@@ -57,7 +62,9 @@ def book_info(selected_books, books_df):
         st.title("Book Information")
         col_list = list(books_df.columns)
         col_list.remove('title')
-        st.write(select_books)
+        st.write(select_books.reset_index())
+        for rev in review:
+            st.write(rev[0])
 
 
 if __name__ == "__main__":
