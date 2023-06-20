@@ -3,7 +3,10 @@ import streamlit as st
 import pandas as pd
 
 import requests
+from io import BytesIO
 from PIL import Image
+
+st.set_page_config(layout="wide")
 
 
 def main():
@@ -36,6 +39,25 @@ def main():
     st.write(books_df)
     book_title = books_df.title.to_list()
     selected_books = st.multiselect("Books title interested", book_title)
+    book_info(selected_books, books_df)
+
+
+def book_info(selected_books, books_df):
+
+    cols1, cols2 = st.columns(2)
+    with cols1:
+        select_books = books_df[books_df['title'].isin(selected_books)]
+        books_url = select_books.book_image.to_list()
+        for url in books_url:
+            response = requests.get(url)
+            img = Image.open(BytesIO(response.content))
+            st.image(img)
+
+    with cols2:
+        st.title("Book Information")
+        col_list = list(books_df.columns)
+        col_list.remove('title')
+        st.write(select_books)
 
 
 if __name__ == "__main__":
