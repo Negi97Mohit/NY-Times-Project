@@ -64,7 +64,10 @@ def book_info(selected_books, books_df, review):
         col_list.remove('title')
         st.write(select_books.reset_index())
         for rev in review:
-            st.write(rev[0])
+            try:
+                st.write(rev[0])
+            except:
+                st.write("No reviews")
 
 
 if __name__ == "__main__":
