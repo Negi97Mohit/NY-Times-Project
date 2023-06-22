@@ -37,10 +37,10 @@ def create_df(reviews):
     movie_df = pd.DataFrame(df_vals, columns=df_keys)
     st.write(movie_df)
 
-    create_list(movie_df)
+    create_list(movie_df, reviews)
 
 
-def create_list(df):
+def create_list(df, reviews):
     cols1, cols2 = st.columns(2)
     with cols1:
         title_list = df.Display_title.tolist()
@@ -50,6 +50,10 @@ def create_list(df):
             response = requests.get(link)
             img = Image.open(BytesIO(response.content))
             st.image(img)
+
+    with cols2:
+        selcted_movies = df[df['Display_title'].isin(selected_title)]
+        st.write(selcted_movies)
 
 
 if __name__ == "__main__":
