@@ -6,6 +6,10 @@ import movieposters as mp
 import requests
 from PIL import Image
 from io import BytesIO
+# library to extract movie ratings
+from imdb import Cinemagoer
+import imdb
+import plotly.express as px
 
 st.set_page_config(layout="wide")
 
@@ -49,6 +53,7 @@ def create_list(df, reviews):
             link = mp.get_poster(title=sti)
             response = requests.get(link)
             img = Image.open(BytesIO(response.content))
+            img = img.resize((300, 400))
             st.image(img)
 
     with cols2:
@@ -56,6 +61,20 @@ def create_list(df, reviews):
         selcted_movies = df[df['Display_title'].isin(
             selected_title)].reset_index()
         st.write(selcted_movies)
+        ia = Cinemagoer()
+        im = imdb.IMDb()
+        ratings = []
+        # capturing the movie title imdb rating for movie review
+        for title in selected_title:
+            movies = ia.search_movie(title)
+            sear = im.search_movie(title)
+            id = sear[0].movieID
+            mv = im.get_movie(id)
+            # st.write(mv['directors'])
+            rating = mv.data['rating']
+            ratings.append(rating)
+        fig = px.bar(ratings)
+        st.plotly_chart(fig)
 
 
 if __name__ == "__main__":
