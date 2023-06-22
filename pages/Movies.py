@@ -52,7 +52,9 @@ def create_list(df, reviews):
             st.image(img)
 
     with cols2:
-        selcted_movies = df[df['Display_title'].isin(selected_title)]
+        st, title("Selected Movies")
+        selcted_movies = df[df['Display_title'].isin(
+            selected_title)].reset_index()
         st.write(selcted_movies)
 
 
