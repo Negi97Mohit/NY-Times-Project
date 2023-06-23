@@ -64,24 +64,15 @@ def book_info(selected_books, books_df, review):
         # image = Image.open(image_url[1])
         image = img.resize((400, 600))
         col.image(image)
-    cols1, cols2 = st.columns(2)
-    with cols1:
-        pass
-        # for url in books_url:
-        #     response = requests.get(url)
-        #     img = Image.open(BytesIO(response.content))
-        #     st.image(img)
-
-    with cols2:
-        st.title("Book Information")
-        col_list = list(books_df.columns)
-        col_list.remove('title')
-        st.write(select_books.reset_index())
-        for rev in review:
-            try:
-                st.write(rev[0])
-            except:
-                st.write("No reviews")
+    st.title("Book Information")
+    col_list = list(books_df.columns)
+    col_list.remove('title')
+    st.write(select_books.reset_index())
+    for rev in review:
+        try:
+            st.write(rev[0])
+        except:
+            st.write("No reviews")
 
 
 if __name__ == "__main__":
