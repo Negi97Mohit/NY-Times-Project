@@ -49,14 +49,28 @@ def main():
 
 def book_info(selected_books, books_df, review):
 
+    select_books = books_df[books_df['title'].isin(selected_books)]
+    books_url = select_books.book_image.to_list()
+
+    # Grid Setting for images
+    n_cols = int(st.number_input("Grid Size", 2, 8, 4))
+    n_pics = len(books_url)
+    n_rows = int(1+n_pics//n_cols)
+    rows = [st.columns(n_cols) for _ in range(n_rows)]
+    cols = [column for row in rows for column in row]
+    for col, image_ur in zip(cols, books_url):
+        response = requests.get(image_ur)
+        img = Image.open(BytesIO(response.content))
+        # image = Image.open(image_url[1])
+        image = img.resize((400, 600))
+        col.image(image)
     cols1, cols2 = st.columns(2)
     with cols1:
-        select_books = books_df[books_df['title'].isin(selected_books)]
-        books_url = select_books.book_image.to_list()
-        for url in books_url:
-            response = requests.get(url)
-            img = Image.open(BytesIO(response.content))
-            st.image(img)
+        pass
+        # for url in books_url:
+        #     response = requests.get(url)
+        #     img = Image.open(BytesIO(response.content))
+        #     st.image(img)
 
     with cols2:
         st.title("Book Information")

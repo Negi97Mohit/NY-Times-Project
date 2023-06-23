@@ -49,7 +49,7 @@ def create_list(df, reviews):
     with cols1:
         title_list = df.Display_title.tolist()
         selected_title = st.multiselect("Select Movie Title", title_list)
-        image_url=[]
+        image_url = []
         for sti in selected_title:
             link = mp.get_poster(title=sti)
             response = requests.get(link)
@@ -57,24 +57,24 @@ def create_list(df, reviews):
             # img = Image.open(BytesIO(response.content))
             # img = img.resize((300, 400))
             # st.image(img)
-    #Grid Setting for images
-    n_cols=int(st.number_input("Grid Size",2,8,4))
-    n_pics=len(selected_title)
-    n_rows=int(1+n_pics//n_cols)
-    rows=[st.columns(n_cols) for  _ in range(n_rows)]
-    cols=[column for row in rows for column in row]
+    # Grid Setting for images
+    n_cols = int(st.number_input("Grid Size", 2, 8, 4))
+    n_pics = len(selected_title)
+    n_rows = int(1+n_pics//n_cols)
+    rows = [st.columns(n_cols) for _ in range(n_rows)]
+    cols = [column for row in rows for column in row]
 
-    for col,image_ur in zip(cols,image_url):
+    for col, image_ur in zip(cols, image_url):
         img = Image.open(BytesIO(image_ur.content))
         # image = Image.open(image_url[1])
         image = img.resize((400, 600))
-        col.image(image)   
-
-    with cols2:
+        col.image(image)
         st.title("Selected Movies")
         selcted_movies = df[df['Display_title'].isin(
             selected_title)].reset_index()
         st.write(selcted_movies)
+
+    with cols2:
         ia = Cinemagoer()
         im = imdb.IMDb()
         ratings = []
@@ -87,10 +87,13 @@ def create_list(df, reviews):
             # st.write(mv['directors'])
             rating = mv.data['rating']
             ratings.append(rating)
-        fig = px.bar(x=selected_title,y=ratings)
-        st.plotly_chart(fig)
+        try:
+            fig = px.bar(x=selected_title, y=ratings)
+            st.plotly_chart(fig)
+        except:
+            st.write('Movie Selected')
 
-      
+
 if __name__ == "__main__":
     st.title('NY Time Movies Review')
     main()
