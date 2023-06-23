@@ -172,6 +172,12 @@ def main():
     end_date = datetime.now()
     st.write(word)
 
+    tweepy_file(word)
 
+def tweepy_file(words):
+    list_words=[]
+    for word in words:
+        list.append(word[0])
+    st.write(list_words)
 if __name__ == "__main__":
     main()
