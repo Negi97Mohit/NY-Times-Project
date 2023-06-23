@@ -69,10 +69,10 @@ def create_list(df, reviews):
         # image = Image.open(image_url[1])
         image = img.resize((400, 600))
         col.image(image)
-        st.title("Selected Movies")
         selcted_movies = df[df['Display_title'].isin(
             selected_title)].reset_index()
-        st.write(selcted_movies)
+    st.title("Selected Movies")
+    st.write(selcted_movies)
 
     with cols2:
         ia = Cinemagoer()
