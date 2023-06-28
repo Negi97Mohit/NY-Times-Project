@@ -5,3 +5,4 @@ dependencies:
     - pynytimes
     - pillow
     - movieposters
+    - IMDbPY
