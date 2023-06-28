@@ -1,2 +1,3 @@
 pynytimes
 PIL
+nltk
