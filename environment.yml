@@ -1,11 +1,7 @@
 name: snowpark_xgboost_tpc
 channels:
-  - snowflake
 dependencies:
   - pip:    
-    - youtube-transcript-api
-    - pytube
-    - openai
-    - pinecone-client
     - pynytimes
     - pillow
+    - movieposters
