@@ -1,6 +1,6 @@
 # Times-Project
 
-#Streamlit link
+# Streamlit link
 https://times-project-qnxa1u7rabt.streamlit.app/
 
 ![movie grid](https://github.com/Negi97Mohit/Times-Project/blob/main/images/movies1.png)
