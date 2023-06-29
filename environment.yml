@@ -7,4 +7,3 @@ dependencies:
     - movieposters
     - IMDbPY
     - plotly
-    - ntlk
